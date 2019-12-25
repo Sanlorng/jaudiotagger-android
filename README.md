@@ -2,9 +2,15 @@ Jaudiotagger for Android
 ======================
 This is Jaudiotagger library for Android. Jaudiotagger is an Audio Tagging library.
 
-This is a pure java library, you can compile the source to JAR file by yourself.
+<!--This is a pure java library, you can compile the source to JAR file by yourself.-->
 
-The compiled JAR library works on Android platform, has been tested on API level 14 and above.
+<!--The compiled JAR library works on Android platform, has been tested on API level 14 and above.-->
+this fork add some methods to adapt Android Scope Storage Mode
+usage:
+```
+ AudioFile audioFile = AudioFileIO.read(context,uri);
+```
+the new method now only available for read music tag;
 
 <h2>Source</h2>
 

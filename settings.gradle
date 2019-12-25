@@ -1,0 +1,3 @@
+include ':jaudiotagger'
+include ':app'
+rootProject.name = "jaudiotagger-android"
