@@ -11,7 +11,7 @@ this fork add some methods to adapt Android Scope Storage Mode.
 before use this method, you should check you have been granted the uri permission
 
 ```
- AudioFile audioFile = AudioFileIO.read(context,uri);
+   AudioFile audioFile = AudioFileIO.read(context,uri);
 ```
 tips: the new method now only available for read music tag.
 

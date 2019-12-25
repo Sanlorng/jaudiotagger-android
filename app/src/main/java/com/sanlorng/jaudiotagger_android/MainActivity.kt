@@ -42,7 +42,8 @@ class MainActivity : AppCompatActivity() {
                     MediaStore.Audio.AudioColumns.ALBUM,
                     MediaStore.Audio.AudioColumns.ALBUM_ID,
                     MediaStore.Audio.AudioColumns.DISPLAY_NAME,
-                    MediaStore.Audio.AudioColumns.SIZE),null,null,null))
+                    MediaStore.Audio.AudioColumns.SIZE,
+                    MediaStore.Audio.Media.DATA),null,null,null))
             }.collect {
                 if (it != null) {
                     list.adapter = ListAdapter(it)

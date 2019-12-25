@@ -19,6 +19,7 @@
 package org.jaudiotagger.audio.flac;
 
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 
@@ -131,10 +132,10 @@ public class FlacTagReader {
     }
 
     public FlacTag read(Context context, Uri uri) throws CannotReadException, IOException {
-        ParcelFileDescriptor fileDescriptor = null;
+        AssetFileDescriptor fileDescriptor = null;
         try {
-            fileDescriptor = context.getContentResolver().openFileDescriptor(uri,"rw");
-            FileChannel fc = new ParcelFileDescriptor.AutoCloseInputStream(fileDescriptor).getChannel();
+            fileDescriptor = context.getContentResolver().openAssetFileDescriptor(uri,"rw");
+            FileChannel fc = new AssetFileDescriptor.AutoCloseInputStream(fileDescriptor).getChannel();
             FlacStreamReader flacStream = new FlacStreamReader(fc, uri.getPath());
             flacStream.findStream();
 

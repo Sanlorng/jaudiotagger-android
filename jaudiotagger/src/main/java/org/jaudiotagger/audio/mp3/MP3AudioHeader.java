@@ -125,7 +125,7 @@ public class MP3AudioHeader implements AudioHeader
 
     public MP3AudioHeader(Context context, Uri uri) throws IOException, InvalidAudioFrameException, CannotReadException
     {
-        if (!seek(uri.getPath(),0, ContextUtils.getParcelInputStream(context, uri)))
+        if (!seek(uri.getPath(),0, ContextUtils.getParcelInputStream(context, uri),-2))
         {
             throw new InvalidAudioFrameException("No audio header found within"  + uri.getPath());
         }
@@ -160,7 +160,7 @@ public class MP3AudioHeader implements AudioHeader
 
     public MP3AudioHeader(Context context, Uri uri, long startByte) throws IOException, InvalidAudioFrameException, CannotReadException
     {
-        if (!seek(uri.getPath(),startByte,ContextUtils.getParcelInputStream(context, uri)))
+        if (!seek(uri.getPath(),startByte,ContextUtils.getParcelInputStream(context, uri),0))
         {
             throw new InvalidAudioFrameException(ErrorMessage.NO_AUDIO_HEADER_FOUND.getMsg(uri.getPath()));
         }
@@ -185,10 +185,10 @@ public class MP3AudioHeader implements AudioHeader
         long filePointerCount;
 
         final FileInputStream fis = new FileInputStream(seekFile);
-        return seek(seekFile.getName(),startByte, fis);
+        return seek(seekFile.getName(),startByte, fis,seekFile.length());
     }
 
-    public boolean seek(String name,long startByte, FileInputStream fis) throws IOException {
+    public boolean seek(String name,long startByte, FileInputStream fis,long fileSize) throws IOException {
         long filePointerCount;
         ByteBuffer header;
         final FileChannel fc = fis.getChannel();
@@ -339,7 +339,7 @@ public class MP3AudioHeader implements AudioHeader
         {
             MP3AudioHeader.logger.finer("Return found matching mp3 header starting at" + filePointerCount);
         }
-        setFileSize(fc.size());
+        setFileSize(fileSize==-2?fc.size():fileSize);
         setMp3StartByte(filePointerCount);
         setTimePerFrame();
         setNumberOfFrames();
