@@ -23,6 +23,9 @@ import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
+import android.provider.BaseColumns;
+import android.provider.MediaStore;
+import android.text.TextUtils;
 
 import org.jaudiotagger.audio.aiff.AiffFileReader;
 import org.jaudiotagger.audio.aiff.AiffFileWriter;
@@ -373,12 +376,12 @@ public class AudioFileIO
             throws CannotReadException, IOException, TagException, ReadOnlyFileException, InvalidAudioFrameException
     {
         checkFileExists(context,uri);
-        String ext = context.getContentResolver().getType(uri);
-        if (ext == null) {
-            throw  new CannotReadException(ErrorMessage.NO_READER_FOR_THIS_FORMAT.getMsg("null type"));
+        String ext = Utils.getExtension(context, uri);
+        if (TextUtils.isEmpty(ext)) {
+            throw  new CannotReadException(ErrorMessage.NO_READER_FOR_THIS_FORMAT.getMsg("empty type"));
         }
-        ext = ext.replace("audio/","");
-        ext = ext.replace("video/","");
+//        ext = ext.replace("audio/","");
+//        ext = ext.replace("video/","");
         AudioFileReader afr = readers.get(ext);
         if (afr == null)
         {

@@ -18,8 +18,14 @@
  */
 package org.jaudiotagger.audio.generic;
 
+import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.MediaStore;
+
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
+import org.jaudiotagger.audio.exceptions.CannotReadException;
 import org.jaudiotagger.utils.FileTypeUtil;
 
 import java.io.*;
@@ -55,6 +61,21 @@ public class Utils {
      */
     public static String getExtension(final File f) {
         final String name = f.getName().toLowerCase();
+        return getExtension(name);
+    }
+
+    public static String getExtension(Context context, Uri uri) throws CannotReadException {
+        Cursor cursor = context.getContentResolver().query(uri,new String[]{MediaStore.MediaColumns.DATA},null,null,null);
+        if (cursor == null || cursor.getCount() == 0) {
+            throw new CannotReadException("uri not found");
+        }
+        cursor.moveToFirst();
+        String extension = cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DATA));
+        cursor.close();
+        return getExtension(extension);
+    }
+
+    public static String getExtension(final String name) {
         final int i = name.lastIndexOf(".");
         if (i == -1) {
             return "";
